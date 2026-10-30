@@ -587,7 +587,7 @@ public class XrayTestResultUpdater implements GherkinObserver, ExecutorObserver 
                                 envTags.isEmpty() ? environments : envTags,
                                 testCase.getUnfilteredPhraseBody(),
                                 result.getFailureReason().orElse(null),
-                                result.getFailingPhrase().isPresent() ? result.getFailingPhrase().get().getPrefilteredIndex() : null
+                                result.getPhrasesSkippedDueToFailure() != 0 ? result.getPassingPhraseTotal() : null
                         ))
                         .collect(Collectors.toSet());
                 HierarchicalTestSuite suite = testCaseXrayTestExecutionResultMap.computeIfAbsent(testPlan.key(), (k) -> new HierarchicalTestSuite());
@@ -639,7 +639,7 @@ public class XrayTestResultUpdater implements GherkinObserver, ExecutorObserver 
         if (stepDescriptions == null || stepDescriptions.isEmpty()) {
             return;
         }
-        Integer failingIdx = result.getFailingPhrase().isPresent() ? result.getFailingPhrase().get().getPrefilteredIndex() : null;
+        Integer failingIdx = result.getPhrasesSkippedDueToFailure() != 0 ? result.getPassingPhraseTotal() : null;
 
         Map<String, TestItem> uniqueStepTestItems = new LinkedHashMap<>();
 
